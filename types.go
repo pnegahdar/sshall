@@ -5,16 +5,14 @@ import (
 	"fmt"
 	"strings"
 	"sync"
+	"github.com/codegangsta/cli"
 )
 
-var DefaultUsers = []string{"root"}
+var DefaultUsers = cli.StringSlice{"ubuntu"}
 var DefaultPort = "22"
 
 func NewMachineFromString(ipString string, possibleUsers ...string) (*Machine, error) {
 	machine := &Machine{}
-	if len(possibleUsers) == 0 {
-		possibleUsers = DefaultUsers
-	}
 	ipString = strings.TrimSpace(ipString)
 	splitUser := strings.Split(ipString, "@")
 	machine.HostIP = splitUser[0]
@@ -25,7 +23,6 @@ func NewMachineFromString(ipString string, possibleUsers ...string) (*Machine, e
 	}
 	splitColon := strings.Split(machine.HostIP, ":")
 	machine.HostIP = splitColon[0]
-	fmt.Println(splitColon)
 	machine.Port = DefaultPort
 	if len(splitColon) == 2 {
 		machine.Port = splitColon[1]
@@ -43,9 +40,17 @@ type Machine struct {
 	PotentialUsers []string
 }
 
-func (m *Machine) ExecCmd(cmd string, identityFiles ...string) error {
+func (m *Machine) String() string {
+	return m.DialAddr()
+}
+
+func (m *Machine) DialAddr() string {
+	return fmt.Sprintf("%v:%v", m.HostIP, m.Port)
+}
+
+func (m *Machine) ExecCmd(cmd string) error {
 	m.Lock()
 	defer m.Unlock()
-	fmt.Print("Execing on yo.")
+	executeCmd(cmd, m)
 	return nil
 }
