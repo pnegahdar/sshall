@@ -45,7 +45,7 @@ func executeCmd(cmd string, machine *Machine) {
 			printState(machine.String(), errRun.Error())
 			return
 		}
+		printState(machine.String(), "SUCCESS")
+		return
 	}
-	printState(machine.String(), "SUCCESS")
-	return
 }
