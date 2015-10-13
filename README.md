@@ -15,6 +15,6 @@ Usage:
  
  Rotate Keys on AWS:
  
-    aws ec2 describe-instances --query 'Reservations[].Instances[].[PrivateIpAddress]' --output text | grep -v None \
-    | sshall --concurrency 50 --try-user=ubuntu --cmd="echo $(cat ~/.ssh/key.pub) >> ~/.ssh/authorized_keys"        
+    aws ec2 describe-instances --query 'Reservations[].Instances[].[PrivateIpAddress]' --filters "Name=instance-state-name,Values=running" --output text \
+    | sshall --concurrency 50 --try-user=ubuntu --try-user=ec2-user --cmd="echo $(cat ~/.ssh/key.pub) >> ~/.ssh/authorized_keys"        
 
