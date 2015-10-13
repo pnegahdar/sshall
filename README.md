@@ -13,6 +13,8 @@ Usage:
      
  Recipes:
  
- Add file to AWS boxes:
+ Rotate Keys on AWS:
  
-    aws ec2 describe-instances --query 'Reservations[].Instances[].[PrivateIpAddress]' --output text | grep -v None | sshall --concurrency 50 --cmd "echo 'yo' > test.txt"        
+    aws ec2 describe-instances --query 'Reservations[].Instances[].[PrivateIpAddress]' --output text | grep -v None \
+    | sshall --concurrency 50 --try-user=ubuntu --cmd="echo $(cat ~/.ssh/key.pub) >> ~/.ssh/authorized_keys"        
+
