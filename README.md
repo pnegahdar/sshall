@@ -3,7 +3,8 @@ SSHAll
 
 Install:
 
-    go install github.com/pnegahdar/sshall/...
+    go get github.com/pnegahdar/sshall/...
+    go install github.com/pnegahdar/sshall
 
 Usage:
 
@@ -12,6 +13,6 @@ Usage:
      
  Recipes:
  
- Add key to AWS boxes:
+ Add file to AWS boxes:
  
-    aws ec2 describe-instances --query 'Reservations[].Instances[].[PrivateIpAddress]' --output text | grep -v None | sshall --concurrency 50 --cmd "ls"        
+    aws ec2 describe-instances --query 'Reservations[].Instances[].[PrivateIpAddress]' --output text | grep -v None | sshall --concurrency 50 --cmd "echo 'yo' > test.txt"        

@@ -61,8 +61,8 @@ func run(c *cli.Context) {
 	wg := &sync.WaitGroup{}
 	for i := 0; i < concurrency; i++ {
 		go func() {
-			defer wg.Done()
 			for machineString := range mCh {
+				defer wg.Done()
 				machine, err := NewMachineFromString(machineString, potentialUsers...)
 				if err != nil {
 					printState(machineString, err.Error())
